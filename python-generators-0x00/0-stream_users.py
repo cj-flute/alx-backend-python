@@ -27,7 +27,3 @@ def stream_users():
 # for user in stream_users():
 #     print(user)
 # Note: Ensure that the MySQL server is running and the database/table exists.
-
-
-for user in stream_users():
-    print(user)
