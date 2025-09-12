@@ -1,5 +1,3 @@
-import sqlite3
-
 #  custom class based context manager for Database connection
 
 
