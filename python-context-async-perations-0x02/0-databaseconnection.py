@@ -22,9 +22,7 @@ class DatabaseConnection:
             self.conn.close()
 
 
-db_conn = sqlite3.connect('users.db')
-
-with DatabaseConnection(db_conn) as conn:
+with DatabaseConnection('user.db') as conn:
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM users")
     users = cursor.fetchall()
