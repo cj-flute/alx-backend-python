@@ -107,3 +107,29 @@ class TestGithubOrgClient(unittest.TestCase):
             )
             mock_repos_url.assert_called_once()
             self.assertEqual(mock_get_json.call_count, 2)
+
+    @parameterized.expand([
+        ({"license": {"key": "mit"}}, "mit", True),
+        ({"license": {"key": "apache-2.0"}}, "mit", False),
+        ({"license": None}, "mit", False),
+        ({}, "mit", False),
+        ({"license": {"key": "mit"}}, None, False),
+    ])
+    def test_has_license(
+            self,
+            repo: dict,
+            license_key: str,
+            expected: bool
+    ) -> None:
+        """
+        Test that the has_license static method returns the correct boolean
+        indicating whether the repo has the specified license.
+        """
+        if license_key is None:
+            with self.assertRaises(AssertionError):
+                GithubOrgClient.has_license(repo, license_key)
+        else:
+            self.assertEqual(
+                GithubOrgClient.has_license(repo, license_key),
+                expected
+            )
