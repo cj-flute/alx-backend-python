@@ -5,7 +5,8 @@ Unit tests for the access_nested_map function in utils.py.
 
 import unittest
 from parameterized import parameterized
-from utils import access_nested_map
+from utils import access_nested_map, get_json
+import unittest.mock
 
 
 class TestAccessNestedMap(unittest.TestCase):
@@ -37,3 +38,24 @@ class TestAccessNestedMap(unittest.TestCase):
         """
         with self.assertRaises(exception):
             access_nested_map(nested_map, path)
+
+
+class TestGetJson(unittest.TestCase):
+    """
+    Unit test class for the get_json function in utils.py.
+    This class uses mocking to simulate HTTP responses.
+    """
+
+    @parameterized.expand([
+        ("http://example.com", {"payload": True}),
+        ("http://holberton.io", {"payload": False}),
+    ])
+    def test_get_json(self, url: str, expected_payload: dict) -> None:
+        """
+        Test that get_json returns the expected payload
+        when given a specific URL.
+        """
+        with unittest.mock.patch('utils.requests.get') as mock_get:
+            mock_get.return_value.json.return_value = expected_payload
+            self.assertEqual(get_json(url), expected_payload)
+            mock_get.assert_called_once_with(url)
