@@ -12,7 +12,7 @@ import unittest.mock
 class TestAccessNestedMap(unittest.TestCase):
     """
     Unit test class for the access_nested_map function.
-    This class checks both successful dictionary lookups 
+    This class checks both successful dictionary lookups
     and expected exceptions.
     """
 
