@@ -12,7 +12,8 @@ import unittest.mock
 class TestAccessNestedMap(unittest.TestCase):
     """
     Unit test class for the access_nested_map function.
-    This class checks both successful dictionary lookups and expected exceptions.
+    This class checks both successful dictionary lookups 
+    and expected exceptions.
     """
 
     @parameterized.expand([
@@ -20,7 +21,12 @@ class TestAccessNestedMap(unittest.TestCase):
         ({"a": {"b": 2}}, ("a",), {"b": 2}),
         ({"a": {"b": 2}}, ("a", "b"), 2),
     ])
-    def test_access_nested_map(self, nested_map: dict, path: tuple, expected: object) -> None:
+    def test_access_nested_map(
+            self,
+            nested_map: dict,
+            path: tuple,
+            expected: object
+    ) -> None:
         """
         Test that access_nested_map returns the correct value
         when given a valid nested_map and path.
@@ -31,7 +37,12 @@ class TestAccessNestedMap(unittest.TestCase):
         ({}, ("a",), KeyError),
         ({"a": 1}, ("a", "b"), KeyError),
     ])
-    def test_access_nested_map_exception(self, nested_map: dict, path: tuple, exception: type) -> None:
+    def test_access_nested_map_exception(
+            self,
+            nested_map: dict,
+            path: tuple,
+            exception: type
+    ) -> None:
         """
         Test that access_nested_map raises a KeyError
         when the path is not present in the nested_map.
@@ -82,7 +93,11 @@ class TestMemoize(unittest.TestCase):
             def a_property(self) -> int:
                 return self.a_method()
 
-        with unittest.mock.patch.object(TestClass, 'a_method', return_value=42) as mock_method:
+        with unittest.mock.patch.object(
+                TestClass,
+                'a_method',
+                return_value=42
+        ) as mock_method:
             test_instance = TestClass()
             result1 = test_instance.a_property
             result2 = test_instance.a_property
