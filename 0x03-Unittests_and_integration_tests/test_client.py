@@ -127,3 +127,53 @@ class TestGithubOrgClient(TestCase):
             GithubOrgClient.has_license(repo, license_key),
             expected
         )
+
+
+class TestIntegrationGithubOrgClient(TestCase):
+    """
+    Integration test class for the GithubOrgClient class.
+    This class uses mocking to simulate HTTP responses
+    and tests the public_repos method of the GithubOrgClient.
+    """
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        """
+        Set up the test class by patching requests.get
+        to return a sequence of predefined payloads.
+        """
+        cls.get_patcher = patch('requests.get')
+        cls.mock_get = cls.get_patcher.start()
+
+        # Define a sequence of payloads to be returned by the mocked requests.get
+        cls.payloads = [
+            {"repos_url": "https://api.github.com/orgs/google/repos"},
+            [{"name": "repo1", "license": {"key": "mit"}},
+             {"name": "repo2", "license": {"key": "apache-2.0"}},
+             {"name": "repo3", "license": {"key": "mit"}}]
+        ]
+
+        # Configure the mock to return a new payload from the sequence on each call
+        cls.mock_get.side_effect = [
+            unittest.mock.Mock(
+                json=lambda: payload,
+                status_code=200
+            ) for payload in cls.payloads
+        ]
+
+    @classmethod
+    def tearDownClass(cls) -> None:
+        """
+        Tear down the test class by stopping the patcher.
+        """
+        cls.get_patcher.stop()
+
+    def test_public_repos(self) -> None:
+        """ Test the public_repos method of GithubOrgClient. """
+        client = GithubOrgClient("google")
+        repos = client.public_repos(license="mit")
+        self.assertEqual(repos, ["repo1", "repo3"])
+        self.assertEqual(self.mock_get.call_count, 2)
+        self.mock_get.assert_any_call("https://api.github.com/orgs/google")
+        self.mock_get.assert_any_call(
+            "https://api.github.com/orgs/google/repos")
