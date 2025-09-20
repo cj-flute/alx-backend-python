@@ -126,6 +126,8 @@ class TestGithubOrgClient(TestCase):
         Test that the has_license static method returns the correct boolean
         indicating whether the repo has the specified license.
         """
-        if license_key is None:
+
+        self.assertEqual(
             GithubOrgClient.has_license(repo, license_key),
             expected
+        )
