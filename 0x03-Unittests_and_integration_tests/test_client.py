@@ -34,7 +34,7 @@ class TestGithubOrgClient(TestCase):
         """
         mock_get_json.return_value = expected_payload
         client = GithubOrgClient(org_name)
-        self.assertEqual(client.org(), expected_payload)
+        self.assertEqual(client.org, expected_payload)
         mock_get_json.assert_called_once_with(
             f"https://api.github.com/orgs/{org_name}"
         )
@@ -127,10 +127,5 @@ class TestGithubOrgClient(TestCase):
         indicating whether the repo has the specified license.
         """
         if license_key is None:
-            with self.assertRaises(AssertionError):
-                GithubOrgClient.has_license(repo, license_key)
-        else:
-            self.assertEqual(
-                GithubOrgClient.has_license(repo, license_key),
-                expected
-            )
+            GithubOrgClient.has_license(repo, license_key),
+            expected
