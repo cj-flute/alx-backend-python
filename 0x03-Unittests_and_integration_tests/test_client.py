@@ -113,12 +113,11 @@ class TestGithubOrgClient(TestCase):
         ({"license": {"key": "my_license"}}, "my_license", True),
         ({"license": {"key": "other_license"}}, "my_license", False),
     ])
-    def test_has_license(
-            self,
-            repo: dict,
-            license_key: str,
-            expected: bool
-    ) -> None:
+    def test_has_license(self,
+                         repo: dict,
+                         license_key: str,
+                         expected: bool
+                         ) -> None:
         """
         Test that the has_license static method returns the correct boolean
         indicating whether the repo has the specified license.
