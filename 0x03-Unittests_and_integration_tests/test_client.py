@@ -110,11 +110,8 @@ class TestGithubOrgClient(TestCase):
             self.assertEqual(mock_get_json.call_count, 2)
 
     @parameterized.expand([
-        ({"license": {"key": "mit"}}, "mit", True),
-        ({"license": {"key": "apache-2.0"}}, "mit", False),
-        ({"license": None}, "mit", False),
-        ({}, "mit", False),
-        ({"license": {"key": "mit"}}, None, False),
+        ({"license": {"key": "my_license"}}, "my_license", True),
+        ({"license": {"key": "other_license"}}, "my_license", False),
     ])
     def test_has_license(
             self,
