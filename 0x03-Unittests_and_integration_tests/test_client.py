@@ -141,7 +141,10 @@ class TestGithubOrgClient(TestCase):
         "expected_repos": expected_repos,
         "apache2_repos": apache2_repos
     }
-    for org_payload, repos_payload, expected_repos, apache2_repos in TEST_PAYLOAD
+    for org_payload,
+    repos_payload,
+    expected_repos,
+    apache2_repos in TEST_PAYLOAD
 ])
 class TestIntegrationGithubOrgClient(TestCase):
     """
@@ -159,12 +162,17 @@ class TestIntegrationGithubOrgClient(TestCase):
         cls.get_patcher = patch('requests.get')
         cls.mock_get = cls.get_patcher.start()
 
-        # Define side effect for function to return different mocks per URL
+        # Define side effect for function
+        # to return different mocks per URL
         def get_side_effect(url, *args, **kwargs):
             if url == "https://api.github.com/orgs/google":
-                return PropertyMock(json=lambda: cls.org_payload, status_code=200)
+                return PropertyMock(
+                    json=lambda: cls.org_payload,
+                    status_code=200)
             if url == cls.org_payload["repos_url"]:
-                return PropertyMock(json=lambda: cls.repos_payload, status_code=200)
+                return PropertyMock(
+                    json=lambda: cls.repos_payload,
+                    status_code=200)
             raise ValueError(f"Unexpected URL: {url}")
 
         cls.mock_get.side_effect = get_side_effect
