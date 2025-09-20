@@ -82,17 +82,17 @@ class TestGithubOrgClient(TestCase):
         ),
     ])
     @patch("client.get_json")
-    def test_public_repos(
-            self,
-            org_payload: dict,
-            repos_payload: list,
-            expected_repos: list,
-            license: str,
-            mock_get_json: unittest.mock.Mock
-    ) -> None:
+    def test_public_repos(self,
+                          org_payload: dict,
+                          repos_payload: list,
+                          expected_repos: list,
+                          license: str,
+                          mock_get_json: unittest.mock.Mock
+                          ) -> None:
         """
-        Test that the public_repos method returns the correct list of repo names
-        based on the mocked repos payload and optional license filter.
+        Test that the public_repos method returns
+        the correct list of repo names based on the
+        mocked repos payload and optional license filter.
         """
         mock_get_json.side_effect = [org_payload, repos_payload]
         client = GithubOrgClient("google")
