@@ -7,8 +7,10 @@ from client import GithubOrgClient
 from parameterized import parameterized
 from unittest.mock import patch, PropertyMock
 
+TestCase = unittest.TestCase
 
-class TestGithubOrgClient(unittest.TestCase):
+
+class TestGithubOrgClient(TestCase):
     """
     Unit test class for the GithubOrgClient class.
     This class uses mocking to simulate HTTP responses
@@ -42,12 +44,11 @@ class TestGithubOrgClient(unittest.TestCase):
         ("abc", {"repos_url": "https://api.github.com/orgs/abc/repos"}),
     ])
     @patch("client.get_json")
-    def test_public_repos_url(
-            self,
-            org_name: str,
-            org_payload: dict,
-            mock_get_json: unittest.mock.Mock
-    ) -> None:
+    def test_public_repos_url(self,
+                              org_name: str,
+                              org_payload: dict,
+                              mock_get_json: unittest.mock.Mock
+                              ) -> None:
         """
         Test that the _public_repos_url property returns the correct URL
         based on the mocked org payload.
