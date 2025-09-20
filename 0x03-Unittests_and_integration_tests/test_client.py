@@ -74,10 +74,14 @@ class TestGithubOrgClient(TestCase):
             None
         ),
         (
-            {"repos_url": "https://api.github.com/orgs/google/repos"},
-            [{"name": "repo1", "license": {"key": "mit"}},
-             {"name": "repo2", "license": {"key": "apache-2.0"}},
-             {"name": "repo3", "license": {"key": "mit"}}],
+            {"repos_url":
+             "https://api.github.com/orgs/google/repos"},
+            [{"name": "repo1",
+              "license": {"key": "mit"}},
+             {"name": "repo2",
+              "license": {"key": "apache-2.0"}},
+             {"name": "repo3",
+              "license": {"key": "mit"}}],
             ["repo1", "repo3"],
             "mit"
         ),
