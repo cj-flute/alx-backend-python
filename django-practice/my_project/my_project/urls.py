@@ -17,11 +17,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from my_app import views
-from .views import BookListCreateView
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/books/', views.BookListCreateAPIVies.as_view(),
+    path('api/books/', views.BookListCreateView.as_view(),
          name="book_list_create"),
-    path('api-auth/', include('rest_framework.urls')),
 ]
