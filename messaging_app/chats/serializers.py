@@ -25,7 +25,8 @@ class UserSerializer(serializers.ModelSerializer):
 # Message Serializer
 class MessageSerializer(serializers.ModelSerializer):
     # Nested serializer for sender details
-    sender = UserSerializer(read_only=True)
+    sender = serializers.CharField(
+        source='sender.username', read_only=True)  # explicit CharField
     message_preview = serializers.SerializerMethodField()  # show first 30 chars
 
     class Meta:
