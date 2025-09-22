@@ -1,9 +1,10 @@
 from django.shortcuts import render
 
-from rest_framework import viewsets, status
+from rest_framework import viewsets, status, filters
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.response import Response
 from .models import Conversation, Message
-from .serializers import ConversationSerializer, MessageSerializer, UserSerializer
+from .serializers import ConversationSerializer, MessageSerializer
 
 
 class ConversationViewSet(viewsets.ModelViewSet):
@@ -12,6 +13,19 @@ class ConversationViewSet(viewsets.ModelViewSet):
     """
     queryset = Conversation.objects.all()
     serializer_class = ConversationSerializer
+
+    # Filtering, searching, and ordering
+    filter_backends = [DjangoFilterBackend,
+                       filters.SearchFilter, filters.OrderingFilter]
+
+    # You can filter by participants
+    filterset_fields = ['participants']
+
+    # Search by conversation name or participant usernames
+    search_fields = ['participants__username']
+
+    # Allow ordering by creation time
+    ordering_fields = ['created_at']
 
     def create(self, request, *args, **kwargs):
         """
@@ -40,6 +54,19 @@ class MessageViewSet(viewsets.ModelViewSet):
     """
     queryset = Message.objects.all()
     serializer_class = MessageSerializer
+
+    # Filtering, searching, and ordering
+    filter_backends = [DjangoFilterBackend,
+                       filters.SearchFilter, filters.OrderingFilter]
+
+    # Filter by conversation or sender
+    filterset_fields = ['conversation', 'sender']
+
+    # Search inside message content
+    search_fields = ['content']
+
+    # Allow ordering by timestamp
+    ordering_fields = ['timestamp']
 
     def create(self, request, *args, **kwargs):
         """
