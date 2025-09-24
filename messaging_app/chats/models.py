@@ -9,7 +9,7 @@ class User(AbstractUser):
     first_name = models.CharField(max_length=150, null=False)
     last_name = models.CharField(max_length=150, null=False)
     email = models.EmailField(unique=True, null=False)
-    password = models.CharField(max_length=256, null=False)
+    password_hash = models.CharField(max_length=256, null=False)
     phone_number = models.CharField(max_length=20, null=True, blank=True)
     ROLE_CHOICES = [
         ('guest', 'Guest'),
@@ -17,12 +17,9 @@ class User(AbstractUser):
         ('admin', 'Admin'),
     ]
     role = models.CharField(
-        max_length=10, choices=ROLE_CHOICES, default='guest')
+        max_length=10, choices=ROLE_CHOICES, default='guest', null=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
-    # email unique
-    email = models.EmailField(unique=True)
 
     def __str__(self):
         return f"{self.username} ({self.email})"
@@ -43,6 +40,8 @@ class Message(models.Model):
         primary_key=True, default=uuid.uuid4, editable=False)
     sender = models.ForeignKey(
         User, related_name="sent_messages", on_delete=models.CASCADE)
+    recipient = models.ForeignKey(
+        User, related_name="received_messages", on_delete=models.CASCADE)
     conversation = models.ForeignKey(
         Conversation, related_name="messages", on_delete=models.CASCADE)
     message_body = models.TextField()
