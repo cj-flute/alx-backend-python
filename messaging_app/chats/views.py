@@ -6,6 +6,55 @@ from rest_framework.response import Response
 from .models import Conversation, Message
 from .serializers import ConversationSerializer, MessageSerializer
 
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from .permissions import IsParticipant
+from django.contrib.auth import get_user_model
+from rest_framework_simplejwt.tokens import RefreshToken
+
+User = get_user_model()
+
+"""
+    To return JWT tokens immediately so the
+    user doesn't need to log in separately after
+    singup.
+"""
+
+
+def get_tokens_for_user(user):
+    """
+        This function generates a refresh and access token for a given user.
+    """
+    refresh = RefreshToken.for_user(user)
+    return {
+        "refresh": str(refresh),
+        "access": str(refresh.access_token),
+    }
+
+
+@api_view(["POST"])
+@permission_classes([AllowAny])  # allow access without a token
+def register(request):
+    username = request.data.get("username")
+    password = request.data.get("password")
+
+    if not username or not password:
+        return Response(
+            {"error": "Username and password required."},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+    if User.objects.filter(username=username).exists():
+        return Response(
+            {"error": "Username already taken."},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+    user = User.objects.create_user(username=username, password=password)
+    return Response(
+        {"message": "User created successfully!"},
+        status=status.HTTP_201_CREATED)
+
 
 class ConversationViewSet(viewsets.ModelViewSet):
     """
@@ -13,6 +62,7 @@ class ConversationViewSet(viewsets.ModelViewSet):
     """
     queryset = Conversation.objects.all()
     serializer_class = ConversationSerializer
+    permission_classes = [IsAuthenticated, IsParticipant]
 
     # Filtering, searching, and ordering
     filter_backends = [DjangoFilterBackend,
@@ -63,10 +113,10 @@ class MessageViewSet(viewsets.ModelViewSet):
     filterset_fields = ['conversation', 'sender']
 
     # Search inside message content
-    search_fields = ['content']
+    search_fields = ['message_body']
 
     # Allow ordering by timestamp
-    ordering_fields = ['timestamp']
+    ordering_fields = ['sent_at']
 
     def create(self, request, *args, **kwargs):
         """
