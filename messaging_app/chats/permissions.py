@@ -1,8 +1,7 @@
-# chats/permissions.py
-from rest_framework.permissions import BasePermission
+from rest_framework import permissions
 
 
-class IsParticipant(BasePermission):
+class IsParticipant(permissions.BasePermission):
     """
     Custom permission: only allow users who are part of a conversation
     to view or send messages in it.
