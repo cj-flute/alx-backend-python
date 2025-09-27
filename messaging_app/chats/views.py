@@ -150,6 +150,12 @@ class MessageViewSet(viewsets.ModelViewSet):
         except Conversation.DoesNotExist:
             return Response({"error": "Conversation does not exist."}, status=status.HTTP_404_NOT_FOUND)
 
+        if request.user not in conversation.participants.all():
+            return Response(
+                {"error": "Forbidden"},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
         message = Message.objects.create(
             conversation=conversation,
             sender_id=sender_id,
