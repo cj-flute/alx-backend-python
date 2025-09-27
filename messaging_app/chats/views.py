@@ -119,6 +119,12 @@ class MessageViewSet(viewsets.ModelViewSet):
     # Allow ordering by timestamp
     ordering_fields = ['sent_at']
 
+    def get_queryset(self):
+        """
+            Restrict messages to only conversations the user is part of.
+        """
+        return Message.objects.filter(conversation_participants=self.request.user)
+
     def create(self, request, *args, **kwargs):
         """
         Override create() to send a new message in an existing conversation.

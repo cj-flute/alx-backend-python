@@ -1,4 +1,5 @@
 from rest_framework import permissions
+from .models import Conversation, Message
 
 
 class IsParticipant(permissions.BasePermission):
@@ -7,17 +8,23 @@ class IsParticipant(permissions.BasePermission):
     to view or send messages in it.
     """
 
+    def has_permission(self, request, view):
+        # 1. Ensure the user is authenticated
+        return request.user and request.user.is_authenticated
+
     def has_object_permission(self, request, view, obj):
-        """
-        Check if the user is part of the conversation.
-        - If obj is a Conversation → check participants.
-        - If obj is a Message → check its conversation participants.
-        """
+        # obj will be a Message or Conversation instance
+        if isinstance(obj, Message):
+            conversation = obj.conversation
+        elif isinstance(obj, Conversation):
+            conversation = obj
+        else:
+            return False
 
-        if hasattr(obj, "participants"):  # obj is a Conversation
-            return request.user in obj.participants.all()
-
-        if hasattr(obj, "conversation"):  # obj is a Message
-            return request.user in obj.conversation.participants.all()
+        # 2. Check if user is a participant of the conversation
+        if request.user in conversation.participants.all():
+            # Allow GET (view), POST (send), PUT/PATCH (update), DELETE
+            if request.method in ["GET", "POST", "PUT", "PATCH", "DELETE"]:
+                return True
 
         return False
