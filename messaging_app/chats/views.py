@@ -8,7 +8,7 @@ from .serializers import ConversationSerializer, MessageSerializer
 
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
-from .permissions import IsParticipant
+from .permissions import IsParticipantOfConversation
 from django.contrib.auth import get_user_model
 from rest_framework_simplejwt.tokens import RefreshToken
 
@@ -62,7 +62,7 @@ class ConversationViewSet(viewsets.ModelViewSet):
     """
     queryset = Conversation.objects.all()
     serializer_class = ConversationSerializer
-    permission_classes = [IsAuthenticated, IsParticipant]
+    permission_classes = [IsAuthenticated, IsParticipantOfConversation]
 
     # Filtering, searching, and ordering
     filter_backends = [DjangoFilterBackend,
@@ -104,7 +104,7 @@ class MessageViewSet(viewsets.ModelViewSet):
     """
     queryset = Message.objects.all()
     serializer_class = MessageSerializer
-    permisssion_classes = [IsAuthenticated, IsParticipant]
+    permisssion_classes = [IsAuthenticated, IsParticipantOfConversation]
 
     # Filtering, searching, and ordering
     filter_backends = [DjangoFilterBackend,

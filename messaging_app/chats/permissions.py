@@ -2,7 +2,7 @@ from rest_framework import permissions
 from .models import Conversation, Message
 
 
-class IsParticipant(permissions.BasePermission):
+class IsParticipantOfConversation(permissions.BasePermission):
     """
     Custom permission: only allow users who are part of a conversation
     to view or send messages in it.
