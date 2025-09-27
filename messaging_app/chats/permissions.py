@@ -8,5 +8,16 @@ class IsParticipant(permissions.BasePermission):
     """
 
     def has_object_permission(self, request, view, obj):
-        # obj here is a Conversation instance
-        return request.user in obj.participants.all()
+        """
+        Check if the user is part of the conversation.
+        - If obj is a Conversation → check participants.
+        - If obj is a Message → check its conversation participants.
+        """
+
+        if hasattr(obj, "participants"):  # obj is a Conversation
+            return request.user in obj.participants.all()
+
+        if hasattr(obj, "conversation"):  # obj is a Message
+            return request.user in obj.conversation.participants.all()
+
+        return False

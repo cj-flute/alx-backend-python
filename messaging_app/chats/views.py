@@ -104,6 +104,7 @@ class MessageViewSet(viewsets.ModelViewSet):
     """
     queryset = Message.objects.all()
     serializer_class = MessageSerializer
+    permisssion_classes = [IsAuthenticated, IsParticipant]
 
     # Filtering, searching, and ordering
     filter_backends = [DjangoFilterBackend,
