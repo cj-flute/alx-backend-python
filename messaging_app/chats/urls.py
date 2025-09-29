@@ -1,12 +1,13 @@
 from django.urls import path, include
 from rest_framework_nested import routers
-from .views import ConversationViewSet, MessageViewSet, register
+from .views import ConversationViewSet, MessageViewSet, register, UserViewSet
 
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 
 # Create a router and register our viewsets with it
 router = routers.DefaultRouter()
+router.register(r'users', UserViewSet)
 router.register(r'conversations', ConversationViewSet, basename='conversation')
 router.register(r'messages', MessageViewSet, basename='message')
 
