@@ -12,6 +12,9 @@ from .permissions import IsParticipantOfConversation
 from django.contrib.auth import get_user_model
 from rest_framework_simplejwt.tokens import RefreshToken
 
+from .filters import MessageFilter
+from .pagination import StandardResultsSetPagination
+
 User = get_user_model()
 
 """
@@ -104,6 +107,14 @@ class MessageViewSet(viewsets.ModelViewSet):
     """
     queryset = Message.objects.all()
     serializer_class = MessageSerializer
+
+    # Pagination
+    pagination_class = StandardResultsSetPagination
+
+    # Filters
+    filterset_class = MessageFilter
+
+    # permissions
     permisssion_classes = [IsAuthenticated, IsParticipantOfConversation]
 
     # Filtering, searching, and ordering
