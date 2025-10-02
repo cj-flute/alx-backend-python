@@ -54,6 +54,7 @@ def register(request):
         )
 
     user = User.objects.create_user(username=username, password=password)
+    print(user)
     return Response(
         {"message": "User created successfully!"},
         status=status.HTTP_201_CREATED)
