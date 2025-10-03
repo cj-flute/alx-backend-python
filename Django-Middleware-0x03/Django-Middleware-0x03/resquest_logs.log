@@ -10,3 +10,6 @@ Not Found: /api/
 2025-10-03 21:18:13.746875 - User: Anonymous - Path: /admin/login/
 2025-10-03 21:18:26.311587 - User: Anonymous - Path: /admin/login/
 2025-10-03 21:18:27.896567 - User: Chijioke (chijioke@test.com) - Path: /admin/
+2025-10-03 22:10:37.611234 - User: Chijioke (chijioke@test.com) - Path: /
+Forbidden: /
+C:\Users\CJFLUTE\Desktop\ALX BackEnd ProDev\Week 1\alx-backend-python\Django-Middleware-0x03\Django-Middleware-0x03\0x03-MessagingApp-Django\settings.py changed, reloading.
