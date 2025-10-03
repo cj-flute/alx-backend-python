@@ -1,5 +1,5 @@
 """
-WSGI config for messaging_app project.
+WSGI config for 0x03-MessagingApp-Django project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,7 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'messaging_app.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE',
+                      '0x03-MessagingApp-Django.settings')
 
 application = get_wsgi_application()
