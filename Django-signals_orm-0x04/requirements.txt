@@ -1,0 +1,6 @@
+Django
+djangorestframework
+environ
+filters
+requests
+djangorestframework_simplejwt
