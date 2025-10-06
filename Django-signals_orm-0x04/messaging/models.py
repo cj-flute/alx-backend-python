@@ -35,9 +35,20 @@ class Message(models.Model):
     edited_by = models.ForeignKey(
         User, null=True, blank=True, on_delete=models.SET_NULL, related_name="edited_messages"
     )
+    parent_message = models.ForeignKey(
+        'self', null=True, blank=True, related_name="replies", no_delete=models.CASCADE
+    )
 
     def __str__(self):
-        return f"Message from {self.sender} to {self.receiver}"
+        return f"{self.sender.username}: {self.content[:20]}"
+
+    def get_all_replies(self):
+        replies = []
+        direct_replies = self.replies.all().select_related("sender", "receiver")
+        for reply in direct_replies:
+            replies.append(reply)
+            replies.extend(reply.get_all_replies())
+        return replies
 
 
 class MessageHistory(models.Model):
