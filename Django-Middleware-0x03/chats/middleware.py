@@ -11,9 +11,9 @@ class RequestLoggingMiddleware:
         # get_respose is the next middleware or the view
         self.get_response = get_response
 
-        # configure logging: log into request_logs.log
+        # configure logging: log into requests.log
         logging.basicConfig(
-            filename="resquest_logs.log",
+            filename="requests.log",
             level=logging.INFO,
             format="%(message)s"
         )
@@ -86,13 +86,13 @@ class OffensiveLanguageMiddleware:
         """Help to extract client IP address"""
         x_forwarded_for = request.META.get("HTTP_X_FORWARD_FOR")
         if x_forwarded_for:
-            ip = x_forwarded_for.split(",")[0]
+            ip = x_forwarded_for.split(",")[0].strip()
         else:
             ip = request.META.get("REMOTE_ADDR")
         return ip
 
 
-class RolepermissionMiddleware:
+class RolePermissionMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
         pass

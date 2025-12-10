@@ -36,7 +36,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'chats',
     'django_filters',
-    'djangorestframework_simplejwt',
 ]
 
 MIDDLEWARE = [
@@ -51,6 +50,7 @@ MIDDLEWARE = [
     'chats.middleware.RestrictAccessByTimeMiddleware',
     'chats.middleware.OffensiveLanguageMiddleware',
     'chats.middleware.RolePermissionMiddleware',
+    'chats.middleware.RestrictAccessByTimeMiddleware',
 ]
 
 ROOT_URLCONF = '0x03-MessagingApp-Django.urls'
